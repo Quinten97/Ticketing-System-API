@@ -1,0 +1,15 @@
+{
+  "name": "ticketing-system-api",
+  "version": "1.0.0",
+  "description": "Backend for my ticketing system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "sqlite3": "^5.0.2"
+  }
+}
