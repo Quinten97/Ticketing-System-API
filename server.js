@@ -29,13 +29,13 @@ app.get("/tickets", (req, res) => {
   db.close();
 });
 
-app.get("/tickets/wildcard", (req, res) => {
+app.get("/tickets/:id", (req, res) => {
   const db = new sqlite3.Database("tickets.db", (err) => {
     if (err) return console.error(err.message);
     console.log("sqlite3 initialized");
   });
 
-  const wildcard = req.query.wildcard;
+  const wildcard = req.params.id;
   console.log(wildcard);
 
   const sqlGetSearch = `SELECT * FROM Tickets WHERE "${wildcard}" IN (first_name, last_name, email, phone_number, employee, id) ORDER BY date DESC`;
@@ -75,16 +75,19 @@ app.post("/tickets", urlencodedParser, (req, res) => {
   db.close();
 });
 
-app.patch("/tickets/:id", (req, res) => {
+app.patch("/tickets/:id", urlencodedParser, (req, res) => {
   let db = new sqlite3.Database("tickets.db", (err) => {
     if (err) return console.error(err.message);
     console.log("sqlite3 initialized");
   });
 
-  const sqlUpdateTicket = "UPDATE tickets SET first_name WHERE id = ?";
-  db.run(sqlUpdateTicket, ["zach", id], (err) => {
+  const column = req.body.column;
+  const replacementValue = req.body.value;
+  const sqlUpdateTicket = `UPDATE tickets SET ${column} = ? WHERE id = ?`;
+  db.run(sqlUpdateTicket, [replacementValue, req.params.id], (err) => {
     if (err) return console.error(err.message);
-    console.log("ticket updated");
+    console.log(`${replacementValue}, ${column}`);
+    res.send(`${replacementValue}, ${column}`);
   });
 
   db.close();
@@ -99,6 +102,7 @@ app.delete("/tickets/:id", (req, res) => {
   const sqlDelete = "DELETE FROM tickets WHERE id = ?";
   db.run(sqlDelete, req.params.id, (err) => {
     if (err) return console.error(err.message);
+    res.send(`ticket with the id ${req.params.id} deleted`);
     console.log("ticket deleted");
   });
 
