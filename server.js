@@ -36,8 +36,6 @@ app.get("/tickets/:id", (req, res) => {
   });
 
   const wildcard = req.params.id;
-  console.log(wildcard);
-
   const sqlGetSearch = `SELECT * FROM Tickets WHERE "${wildcard}" IN (first_name, last_name, email, phone_number, employee, id) ORDER BY date DESC`;
   console.log(sqlGetSearch);
   db.all(sqlGetSearch, [], (err, rows) => {
@@ -69,7 +67,7 @@ app.post("/tickets", urlencodedParser, (req, res) => {
     "INSERT INTO tickets (date, first_name, last_name, email, phone_number, brand_model, serial, issue, notes, employee) VALUES(?,?,?,?,?,?,?,?,?,?)";
   db.run(sqlCreateTicket, input, (err) => {
     if (err) return console.error(err.message);
-    console.log("ticket created.");
+    res.send(`Ticket created with the values ${input}`);
   });
 
   db.close();
@@ -86,8 +84,9 @@ app.patch("/tickets/:id", urlencodedParser, (req, res) => {
   const sqlUpdateTicket = `UPDATE tickets SET ${column} = ? WHERE id = ?`;
   db.run(sqlUpdateTicket, [replacementValue, req.params.id], (err) => {
     if (err) return console.error(err.message);
-    console.log(`${replacementValue}, ${column}`);
-    res.send(`${replacementValue}, ${column}`);
+    res.send(
+      `${column} succesfully updated with the value: ${replacementValue}`
+    );
   });
 
   db.close();
@@ -103,7 +102,6 @@ app.delete("/tickets/:id", (req, res) => {
   db.run(sqlDelete, req.params.id, (err) => {
     if (err) return console.error(err.message);
     res.send(`ticket with the id ${req.params.id} deleted`);
-    console.log("ticket deleted");
   });
 
   db.close();
