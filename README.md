@@ -1,12 +1,21 @@
-# A simple ticketing REST API
+# Simple ticketing REST API
 
 Hey! thanks for checking out the project, I wrote this simple API with the intention of using it for my small computer repair business but figured that it may be of help to others if I uploaded it for use here on github.
 
 This is my first time writing an API so feel free to leave any constructive critism on how I could improve.
 
-## Use
+## Getting Started
 
-I hope to have a video up soon to show how to implement this api locally for your private use, currently I am working on developing a frontend for it so it could be used locally. The goal of this project of course is to provide a free tool for small business owners.
+I hope to have a video up soon to show how to implement this api locally for your private use, currently I am working on developing a frontend for it so it could be used locally. The goal of this project of course is to provide a free tool for small business owners but for now.
+
+1. Clone Repository to Local Machine
+    * this can be accomplished several ways but the most user friendly might be to use github for desktop, Git bash or even simply download the files and store them manually.
+2. Install [Node](https://nodejs.org/en/download/)
+3. Open your terminal and navigate to the local directory
+4. Run  ``` npm install ``` in your terminal to install the dependancies locally.
+5. Run ``` node server.js ``` in your terminal to start the backend server if you change the name of the file remember to plug it into the command instead of server.js
+6. Open a browser and navigate to http://Localhost:3000 and you should be greeted with a static html page that is being served by the node server. If you changed the port remember to adjust the url as such.
+7. Enjoy! your api server is now running and is ready for local development for a frontend.
 
 ## Endpoints
 
