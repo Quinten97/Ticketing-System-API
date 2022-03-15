@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const cors = require("cors");
 
 //sqlite setup
 const sqlite3 = require("sqlite3").verbose();
@@ -11,6 +12,8 @@ const bodyParser = require("body-parser");
 
 const jsonParser = bodyParser.json();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+app.use(cors());
 
 app.use(express.static("public"));
 
