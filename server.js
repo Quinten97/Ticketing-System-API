@@ -49,23 +49,27 @@ app.get("/tickets/:id", (req, res) => {
   db.close();
 });
 
-app.post("/tickets", urlencodedParser, (req, res) => {
+app.post("/tickets", jsonParser, (req, res) => {
   let db = new sqlite3.Database("tickets.db", (err) => {
     if (err) return console.error(err.message);
-    console.log("sqlite3 initialized");
+    console.log('sql initialized');
   });
+  console.log(req)
+  const data = req.body;
+  console.log(data)
   const input = [
-    req.body.date,
-    req.body.firstName,
-    req.body.lastName,
-    req.body.email,
-    req.body.phoneNumber,
-    req.body.brandModel,
-    req.body.serial,
-    req.body.issue,
-    req.body.notes,
-    req.body.employee,
+    data.date,
+    data.firstName,
+    data.lastName,
+    data.email,
+    data.phoneNumber,
+    data.brandModel,
+    data.serial,
+    data.issue,
+    data.notes,
+    data.employee,
   ];
+
   const sqlCreateTicket =
     "INSERT INTO tickets (date, first_name, last_name, email, phone_number, brand_model, serial, issue, notes, employee) VALUES(?,?,?,?,?,?,?,?,?,?)";
   db.run(sqlCreateTicket, input, (err) => {
