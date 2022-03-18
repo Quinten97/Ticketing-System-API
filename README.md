@@ -37,6 +37,12 @@ This endpoint returns every ticket currently in the db.
 
 This endpoint can return every ticket that meets the search criteria, you can pass in any string and it will check to see if any tickets have a matching entry on their first_name, last_name, email, phone_number, or employee column.
 
+```
+/tickets/byID/:id
+```
+
+This endpoint returns a ticket that matches the id searched.
+
 ### POST
 
 ```

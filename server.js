@@ -49,14 +49,31 @@ app.get("/tickets/:id", (req, res) => {
   db.close();
 });
 
+app.get("/tickets/byID/:id", (req, res) => {
+  const db = new sqlite3.Database("tickets.db", (err) => {
+    if (err) return console.error(err.message);
+    console.log("sqlite3 initialized");
+  });
+
+  const wildcard = req.params.id;
+  const sqlGetSearch = `SELECT * FROM Tickets WHERE ${wildcard} IN (id)`;
+  console.log(sqlGetSearch);
+  db.all(sqlGetSearch, [], (err, rows) => {
+    if (err) return console.error(err.message);
+    res.send(rows);
+  });
+
+  db.close();
+});
+
 app.post("/tickets", jsonParser, (req, res) => {
   let db = new sqlite3.Database("tickets.db", (err) => {
     if (err) return console.error(err.message);
-    console.log('sql initialized');
+    console.log("sql initialized");
   });
-  console.log(req)
+  console.log(req);
   const data = req.body;
-  console.log(data)
+  console.log(data);
   const input = [
     data.date,
     data.firstName,
@@ -68,10 +85,11 @@ app.post("/tickets", jsonParser, (req, res) => {
     data.issue,
     data.notes,
     data.employee,
+    data.status,
   ];
 
   const sqlCreateTicket =
-    "INSERT INTO tickets (date, first_name, last_name, email, phone_number, brand_model, serial, issue, notes, employee) VALUES(?,?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO tickets (date, first_name, last_name, email, phone_number, brand_model, serial, issue, notes, employee, status) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
   db.run(sqlCreateTicket, input, (err) => {
     if (err) return console.error(err.message);
     res.send(`Ticket created with the values ${input}`);
