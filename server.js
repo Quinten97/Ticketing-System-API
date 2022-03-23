@@ -1,7 +1,7 @@
 //express setup
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 5000;
 const cors = require("cors");
 
 //sqlite setup
@@ -85,7 +85,7 @@ app.post("/tickets", jsonParser, (req, res) => {
     data.issue,
     data.notes,
     data.employee,
-    data.status,
+    "open",
   ];
 
   const sqlCreateTicket =
@@ -98,22 +98,25 @@ app.post("/tickets", jsonParser, (req, res) => {
   db.close();
 });
 
-app.patch("/tickets/:id", urlencodedParser, (req, res) => {
+app.patch("/tickets/:id", jsonParser, (req, res) => {
   let db = new sqlite3.Database("tickets.db", (err) => {
     if (err) return console.error(err.message);
     console.log("sqlite3 initialized");
   });
-
+  const id = req.params.id;
   const column = req.body.column;
   const replacementValue = req.body.value;
-  const sqlUpdateTicket = `UPDATE tickets SET ${column} = ? WHERE id = ?`;
-  db.run(sqlUpdateTicket, [replacementValue, req.params.id], (err) => {
+  const sqlUpdateTicket = `UPDATE tickets SET ${column} = ? WHERE ${id} in (id)`;
+
+  console.log(sqlUpdateTicket, replacementValue);
+  db.run(sqlUpdateTicket, [replacementValue], (err) => {
     if (err) return console.error(err.message);
     res.send(
-      `${column} succesfully updated with the value: ${replacementValue}`
+      JSON.stringify(
+        `${column} succesfully updated with the value: ${replacementValue}`
+      )
     );
   });
-
   db.close();
 });
 
@@ -123,12 +126,12 @@ app.delete("/tickets/:id", (req, res) => {
     console.log("sqlite3 initialized");
   });
 
-  const sqlDelete = "DELETE FROM tickets WHERE id = ?";
-  db.run(sqlDelete, req.params.id, (err) => {
+  const sqlDelete = `DELETE FROM Tickets WHERE ${req.params.id} in (id)`;
+  db.run(sqlDelete, (err) => {
     if (err) return console.error(err.message);
     res.send(`ticket with the id ${req.params.id} deleted`);
   });
-
+  console.log(`ticket with the id ${req.params.id} deleted`);
   db.close();
 });
 
