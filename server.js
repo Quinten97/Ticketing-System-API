@@ -16,6 +16,8 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(
   cors({
     origin: "*",
+    headers: ["Content-Type"],
+    credentials: true,
   })
 );
 
