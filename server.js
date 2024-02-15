@@ -13,7 +13,9 @@ const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-app.use(cors());
+app.use(cors({
+  origin: '*'
+}));
 
 app.use(express.static("public"));
 
