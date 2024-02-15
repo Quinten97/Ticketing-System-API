@@ -15,10 +15,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.use(
   cors({
-    origin: "https://favoritecomputertech.netlify.app/",
-    methods: "*",
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+    origin: "*",
   })
 );
 
